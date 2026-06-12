@@ -5,8 +5,8 @@ from datetime import datetime, date
 import pytz
 
 # ── Config ────────────────────────────────────────────────────────────────────
-TELEGRAM_TOKEN   = os.environ["TELEGRAM_TOKEN"]
-TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+TELEGRAM_TOKEN   = os.environ["TELEGRAM_TOKEN"].strip()
+TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"].strip()
 TIMEZONE         = "Europe/Dublin"
 
 # Natal data: 戊午 day master, 丙戌 month, 癸亥 hour
