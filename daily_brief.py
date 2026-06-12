@@ -250,16 +250,16 @@ def main():
     fs_en, fs_color, fs_advice = FSTAR.get(fs, ("", "⚪️", ""))
 
     # ── Personal section ──────────────────────────────────────────────────────
-    personal = None
+    personal_block = ""
 
     clash = CLASH[animal]
     if clash in NATAL_BRANCHES:
-        personal = (
-            f"Столкновение {animal} - {clash}\n"
-            f"{ANIMAL_EMOJI[clash]}Быть внимательным рожденным в год {ANIMAL_RU_GEN[clash]}"
+        personal_block = (
+            f"\n\n⛔ <b>Столкновение:</b> {animal} - {clash}\n"
+            f"Быть внимательным рожденным в год {ANIMAL_RU_GEN[clash]}"
         )
 
-    if personal is None:
+    if not personal_block:
         combo_phrase = {
             "Pig":   "тема ресурсов в фокусе",
             "Horse": "в фокусе ваш Day Master",
@@ -267,16 +267,16 @@ def main():
         }
         for c in combinations(animal):
             if c in combo_phrase:
-                personal = (
-                    f"Активация {animal} - {c}\n"
-                    f"{ANIMAL_EMOJI[c]}Рождённым в год {ANIMAL_RU_GEN[c]} — {combo_phrase[c]}"
+                personal_block = (
+                    f"\n\n⚡ <b>Активация:</b> {animal} - {c}\n"
+                    f"Рождённым в год {ANIMAL_RU_GEN[c]} — {combo_phrase[c]}"
                 )
                 break
 
-    if personal is None and animal in NOBLE_PEOPLE:
-        personal = (
-            "День Благородного Человека (贵人)\n"
-            "👑Выше шанс встретить нужного человека"
+    if not personal_block and animal in NOBLE_PEOPLE:
+        personal_block = (
+            "\n\n👑 <b>Благородный Человек</b> (贵人)\n"
+            "Выше шанс встретить нужного человека"
         )
 
     # ── Five-element actions ──────────────────────────────────────────────────
@@ -286,27 +286,22 @@ def main():
         element_lines.append(f"{ELEMENT_EMOJI[el]} {ELEMENT_RU[el]} — {RELATION_ACTION[rel]}")
     elements_block = "\n".join(element_lines)
 
-    personal_block = f"\n{personal}\n" if personal else ""
+    msg = f"""<i>{wd}, {dt} · {day_zh} · {animal}</i>
 
-    msg = f"""{wd}, {dt} · {day_zh} · {animal}
-
-🎖 Офицер дня: {off_zh} {off_en} — {off_title}.
+🎖 <b>Офицер дня: {off_zh} {off_en} — {off_title}.</b>
 {off_sub}
 
-Что делать сегодня ?
+<u>Что делать сегодня ?</u>
+{off_fav}
+<i>Отложить:</i> {off_unfav}
 
-* {off_fav}
-* Отложить: {off_unfav}
+⭐ <b>Созвездие: {c_zh} {c_en} — {c_theme}.</b>
+{c_focus}
 
-✨ Созвездие: {c_zh} {c_en} — {c_theme}.
+{fs_color} <b>Звезда {fs} · {fs_en}</b>
+{fs_advice}{personal_block}
 
-* {c_focus}
-
-{fs_color} Звезда {fs} · {fs_en}
-
-* {fs_advice}
-{personal_block}
-Если Ваш Господин Дня:
+<b>Если Ваш Господин Дня:</b>
 {elements_block}
 
 Maria Anch · Dublin"""
