@@ -129,8 +129,13 @@ def tg_send(text: str):
         data=payload,
         headers={"Content-Type": "application/json"}
     )
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = e.read().decode()
+        print(f"Telegram API error {e.code}: {body}")
+        raise
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 def main():
