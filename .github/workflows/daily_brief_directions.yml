@@ -1,0 +1,30 @@
+name: Daily Brief Directions → Telegram
+
+on:
+  schedule:
+    # 8:01 Dublin time = 7:01 UTC during BST (summer, ~Mar-Oct)
+    # In winter (GMT) Dublin = UTC, so this becomes 7:01 Dublin instead of 8:01
+    - cron: "1 7 * * *"
+  workflow_dispatch:   # allows manual run from GitHub UI
+
+jobs:
+  send-directions-brief:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pytz
+
+      - name: Run directions brief
+        env:
+          TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python daily_brief_directions.py
