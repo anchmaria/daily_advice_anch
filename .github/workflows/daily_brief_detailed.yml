@@ -1,28 +1,20 @@
-name: Daily Brief Detailed → Telegram
+name: Daily Brief Detailed → Telegram (DISABLED)
 
 on:
-  schedule:
-    # 7:10 Dublin time = 6:10 UTC during BST (summer, ~Mar-Oct)
-    # In winter (GMT) Dublin = UTC, so this becomes 6:10 Dublin instead of 7:10
-    - cron: "10 6 * * *"
-  workflow_dispatch:   # allows manual run from GitHub UI
+  workflow_dispatch:   # manual only, removed schedule
 
 jobs:
   send-detailed-brief:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
-
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-
       - name: Install dependencies
         run: pip install pytz
-
       - name: Run detailed daily brief
         env:
           TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
