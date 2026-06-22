@@ -2,29 +2,26 @@ name: Daily Brief Spirits → Telegram
 
 on:
   schedule:
-    # 8:05 Dublin time = 7:05 UTC during BST (summer, ~Mar-Oct)
-    # In winter (GMT) Dublin = UTC, so this becomes 7:05 Dublin instead of 8:05
-    - cron: "5 7 * * *"
-  workflow_dispatch:   # allows manual run from GitHub UI
+    # 8:00 Dublin time summer (BST) = 7:00 UTC
+    # Note: GitHub Actions may delay up to 30-60 min on free tier
+    - cron: "0 7 * * *"
+  workflow_dispatch:
 
 jobs:
   send-spirits-brief:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
-
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-
       - name: Install dependencies
         run: pip install pytz
-
       - name: Run spirits brief
         env:
           TELEGRAM_TOKEN:   ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python daily_brief_spirits.py
+    
